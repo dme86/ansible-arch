@@ -1,0 +1,49 @@
+---
+- name: Setup dan's environment
+  hosts: all
+  become: true
+  vars:
+    user_name: "dan"
+    home_dir: "/home/{{ user_name }}"
+    nvim_dir: "{{ home_dir }}/.config/nvim"
+    fish_dir: "{{ home_dir }}/.config/fish"
+  tasks:
+    - name: Check if user exists
+      getent:
+        database: passwd
+        key: "{{ user_name }}"
+      register: user_exists
+      ignore_errors: true
+
+    - name: Create user
+      user:
+        name: "{{ user_name }}"
+        createhome: yes
+        home: "{{ home_dir }}"
+      when: user_exists|failed
+
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ lookup('file', 'packages.yml') | from_yaml()['packages'] }}"
+
+    - name: Clone neovim config
+      git:
+        repo: https://github.com/dme86/neovim
+        dest: "{{ nvim_dir }}"
+        clone: yes
+        update: yes
+        force: yes
+        depth: 1
+      become_user: "{{ user_name }}"
+
+    - name: Clone fish config
+      git:
+        repo: https://github.com/dme86/fish
+        dest: "{{ fish_dir }}"
+        clone: yes
+        update: yes
+        force: yes
+        depth: 1
+      become_user: "{{ user_name }}"
