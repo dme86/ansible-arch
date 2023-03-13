@@ -47,3 +47,14 @@
         force: yes
         depth: 1
       become_user: "{{ user_name }}"
+      
+     - name: Clone dwm config
+      git:
+        repo: https://github.com/dme86/dwm
+        dest: "{{ home_dir }}/dwm"
+        clone: yes
+        update: yes
+        force: yes
+        depth: 1
+      become_user: "{{ user_name }}"
+      when: desktop|default(False)|bool
