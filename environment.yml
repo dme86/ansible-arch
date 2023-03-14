@@ -7,6 +7,18 @@
     home_dir: "/home/{{ user_name }}"
     nvim_dir: "{{ home_dir }}/.config/nvim"
     fish_dir: "{{ home_dir }}/.config/fish"
+    files_to_upload:
+      - src: /files/40-libinput.conf
+        dest: /etc/X11/xorg.conf.d/40-libinput.conf
+        mode: 644
+        owner: root
+        group: root
+      - src: /files/01-touchpad.conf
+        dest: /etc/X11/xorg.conf.d/01-touchpad.conf
+        mode: 644
+        owner: root
+        group: root
+
   tasks:
     - name: Check if user exists
       getent:
@@ -49,7 +61,14 @@
       become_user: "{{ user_name }}"
       
       ### only if --extra-vars "desktop=True"
-      
+
+    - name: Install desktop packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ lookup('file', 'packages_desktop.yml') | from_yaml()['packages'] }}"
+      when: desktop|default(False)|bool
+
     - name: Clone dwm config
       git:
         repo: https://github.com/dme86/dwm
@@ -93,9 +112,19 @@
         state: present
       when: desktop|default(False)|bool and xinitrc_file.stdout and xinitrc_file.rc == 0
 
-    - name: Install desktop packages
-      package:
-        name: "{{ item }}"
-        state: present
-      with_items: "{{ lookup('file', 'packages_desktop.yml') | from_yaml()['packages'] }}"
-      when: desktop|default(False)|bool
+    - name: Check if files exist on remote machine
+      stat:
+        path: "{{ item.dest }}"
+      with_items: "{{ files_to_upload }}"
+      register: file_stat
+      when: desktop|default(false)|bool
+
+    - name: Upload files from local machine if they don't exist on remote machine
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ item.mode }}"
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+      with_items: "{{ files_to_upload }}"
+      when: desktop|default(false)|bool and not item.dest in file_stat.results | map(attribute='stat.path') | list
