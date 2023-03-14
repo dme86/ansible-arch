@@ -80,6 +80,17 @@
       become_user: "{{ user_name }}"
       when: desktop|default(False)|bool
       
+    - name: Clone wallpapers
+      git:
+        repo: https://github.com/dme86/.wallpapers
+        dest: "{{ home_dir }}/.wallpapers"
+        clone: yes
+        update: yes
+        force: yes
+        depth: 1
+      become_user: "{{ user_name }}"
+      when: desktop|default(False)|bool
+
     - name: Install dwm
       command: make install
       args:
