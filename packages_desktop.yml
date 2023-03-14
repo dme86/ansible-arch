@@ -6,6 +6,7 @@ packages:
   - libpulse
   - playerctl
   - dunst
+  - feh
   - nemo
   - alacritty
   - base-devel 
