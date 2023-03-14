@@ -48,7 +48,9 @@
         depth: 1
       become_user: "{{ user_name }}"
       
-     - name: Clone dwm config
+      ### only if --extra-vars "desktop=True"
+      
+    - name: Clone dwm config
       git:
         repo: https://github.com/dme86/dwm
         dest: "{{ home_dir }}/dwm"
@@ -58,3 +60,36 @@
         depth: 1
       become_user: "{{ user_name }}"
       when: desktop|default(False)|bool
+      
+    - name: Install dwm
+      command: make install
+      args:
+        chdir: "{{ home_dir }}/dwm"
+      when: desktop|default(False)|bool and not ansible.check_mode and not lookup('file', '/usr/local/bin/dwm', follow=False)
+       
+    - name: Install dwmblocks
+      command: make dwmblocks && make install
+      args:
+        chdir: "{{ home_dir }}/dwm/dwmblocks-async"
+      when: desktop|default(False)|bool and not ansible.check_mode and not lookup('file', '/usr/local/bin/dwmblocks', follow=False)
+         
+    - name: Check if .xinitrc exists and contains "exec dwm"
+      shell:
+        cmd: 'grep -q "exec dwm" {{ home_dir }}/.xinitrc'
+        warn: false
+      register: xinitrc_file
+      when: desktop|default(False)|bool
+
+    - name: Create .xinitrc file with "exec dwm" inside
+      copy:
+        content: "exec dwm\n"
+        dest: "{{ home_dir }}/.xinitrc"
+      when: desktop|default(False)|bool and not xinitrc_file.stdout or xinitrc_file.rc != 0
+
+    - name: Append "exec dwm" to .xinitrc file
+      lineinfile:
+        path: "{{ home_dir }}/.xinitrc"
+        line: "exec dwm"
+        state: present
+      when: desktop|default(False)|bool and xinitrc_file.stdout and xinitrc_file.rc == 0
+
