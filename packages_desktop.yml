@@ -1,6 +1,7 @@
 ---
 packages:
   - chromium
+  - dmenu
   - nemo
   - alacritty
   - base-devel 
