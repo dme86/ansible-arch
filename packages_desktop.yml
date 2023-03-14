@@ -3,6 +3,9 @@ packages:
   - chromium
   - dmenu
   - arandr
+  - libpulse
+  - playerctl
+  - dunst
   - nemo
   - alacritty
   - base-devel 
