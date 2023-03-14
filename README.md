@@ -1,4 +1,4 @@
-![enter image description here](https://archlinux.org/static/logos/archlinux-logo-light-scalable.1ae4cc2e2469.svg)
+![enter image description here](https://archlinux.org/static/logos/archlinux-logo-dark-1200dpi.b42bd35d5916.png)
 
 # ansible-arch
 
