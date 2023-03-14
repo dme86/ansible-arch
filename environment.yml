@@ -22,7 +22,7 @@
         home: "{{ home_dir }}"
       when: user_exists|failed
 
-    - name: Install packages
+    - name: Install common packages
       package:
         name: "{{ item }}"
         state: present
@@ -93,3 +93,9 @@
         state: present
       when: desktop|default(False)|bool and xinitrc_file.stdout and xinitrc_file.rc == 0
 
+    - name: Install desktop packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ lookup('file', 'packages_desktop.yml') | from_yaml()['packages'] }}"
+      when: desktop|default(False)|bool
