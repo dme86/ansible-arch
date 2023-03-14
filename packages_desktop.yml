@@ -2,3 +2,13 @@
 packages:
   - chromium
   - nemo
+  - alacritty
+  - base-devel 
+  - libx11 
+  - libxft 
+  - xorg-server 
+  - xorg-xinit 
+  - libxinerama 
+  - ttf-meslo-nerd 
+  - pacman-contrib 
+  - terminus-font

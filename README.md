@@ -6,7 +6,7 @@ Besides [Gentoo](https://www.gentoo.org/), [Arch](https://archlinux.org/) is my 
 
 ## environment
 
-`environment.yml` clones some of my config files from git, i can pass a parameter for cloning my [dwm](https://github.com/dme86/dwm) config too (this is really cool, i know!).
+`environment.yml` clones my config files from git. I can pass a parameter for cloning my [dwm](https://github.com/dme86/dwm) config, configure it and adding some more packages i need for my desktop (this is really cool, i know!).
 
 **Example**:
 
