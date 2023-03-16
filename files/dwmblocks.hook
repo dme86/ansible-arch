@@ -1,0 +1,9 @@
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+Description = Restarting dwmblocks after upgrade...
+When = PostTransaction
+Exec = /usr/bin/pkill -RTMIN+25 dwmblocks

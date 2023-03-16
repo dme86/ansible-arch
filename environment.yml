@@ -18,6 +18,11 @@
         mode: 644
         owner: root
         group: root
+      - src: /files/dwmblocks.hook
+        dest: /etc/pacman.d/hooks/dwmblocks.hook
+        mode: 644
+        owner: root
+        group: root
 
   tasks:
     - name: Check if user exists
@@ -102,7 +107,24 @@
       args:
         chdir: "{{ home_dir }}/dwm/dwmblocks-async"
       when: desktop|default(False)|bool and not ansible.check_mode and not lookup('file', '/usr/local/bin/dwmblocks', follow=False)
-         
+
+    - name: Ensure directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - /etc/pacman.d/hooks/
+      when: desktop|default(False)|bool
+
+    - name: Ensure HookDir line is uncommented in pacman.conf
+      become: true
+      lineinfile:
+        path: /etc/pacman.conf
+        regexp: '^#?(HookDir\s+=\s+/etc/pacman\.d/hooks/)$'
+        line: '\1'
+        backup: yes
+      when: desktop|default(False)|bool
+
     - name: Check if .xinitrc exists and contains "exec dwm"
       shell:
         cmd: 'grep -q "exec dwm" {{ home_dir }}/.xinitrc'
