@@ -3,6 +3,7 @@ packages:
   - chromium
   - dmenu
   - arandr
+  - autorandr
   - libpulse
   - playerctl
   - dunst
