@@ -4,3 +4,5 @@ packages:
   - fish
   - neovim
   - lazygit
+  - fzf
+  - ripgrep
