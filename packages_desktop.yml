@@ -5,7 +5,7 @@ packages:
   - arandr
   - autorandr
   - libpulse
-  - playerctl
+  - playerctl # also supports https://github.com/ciderapp/Cider
   - dunst
   - feh
   - nemo
