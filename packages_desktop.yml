@@ -7,6 +7,7 @@ packages:
   - libpulse
   - playerctl # also supports https://github.com/ciderapp/Cider
   - dunst
+  - scrot
   - feh
   - nemo
   - alacritty
@@ -16,6 +17,6 @@ packages:
   - xorg-server 
   - xorg-xinit 
   - libxinerama 
-  - ttf-meslo-nerd 
+  - ttf-hack-nerd 
   - pacman-contrib 
   - terminus-font

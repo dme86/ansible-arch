@@ -3,6 +3,8 @@ packages:
   - git
   - fish
   - neovim
+  - htop
   - lazygit
   - fzf
+  - jq
   - ripgrep

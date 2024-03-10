@@ -1,5 +1,5 @@
 ---
-- name: Setup dan's environment
+- name: Setup Dan's environment
   hosts: localhost
   become: true
   vars:
@@ -26,7 +26,7 @@
 
   tasks:
 
-    - name: Create user
+    - name: Create default user
       user:
         name: "{{ user_name }}"
         createhome: yes
@@ -71,7 +71,18 @@
     - name: Clone dwm config
       git:
         repo: https://github.com/dme86/dwm
-        dest: "{{ home_dir }}/dwm"
+        dest: "{{ home_dir }}/.config/dwm"
+        clone: yes
+        update: yes
+        force: yes
+        depth: 1
+      become_user: "{{ user_name }}"
+      when: desktop|default(False)|bool
+
+    - name: Clone yay
+      git:
+        repo: https://github.com/Jguer/yay
+        dest: "{{ home_dir }}"
         clone: yes
         update: yes
         force: yes
@@ -103,6 +114,12 @@
         make install
       when: desktop|default(False)|bool
 
+    - name: Install yay
+      shell: |
+        cd {{ home_dir }}/yay
+        makepkg -si
+      when: desktop|default(False)|bool
+
     - name: Ensure directories exist
       file:
         path: "{{ item }}"
@@ -116,7 +133,7 @@
       lineinfile:
         path: /etc/pacman.conf
         regexp: '^#?(HookDir\s+=\s+/etc/pacman\.d/hooks/)$'
-        line: '\1'
+        line: '\1' # TODO: this is a bug, because of "warning: config file PATH line 17 directive in selection options not recognized."
         backup: yes
       when: desktop|default(False)|bool
 
@@ -141,5 +158,4 @@
       register: file_stat
       when: desktop|default(false)|bool
 
-# TODO: add upload of multiple files
 # fix: warning: config file /etc/pacman.conf, line 17: directive '\1' in section 'options' not recognized.
