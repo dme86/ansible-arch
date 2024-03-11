@@ -102,7 +102,7 @@
 
     - name: Clone yay
       git:
-        repo: https://github.com/Jguer/yay
+        repo: https://aur.archlinux.org/yay.git
         dest: "{{ home_dir }}"
         clone: yes
         update: yes
