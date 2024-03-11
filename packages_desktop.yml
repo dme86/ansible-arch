@@ -3,6 +3,7 @@ packages:
   - chromium
   - dmenu
   - arandr
+  - acpilight
   - autorandr
   - libpulse
   - playerctl # also supports https://github.com/ciderapp/Cider

@@ -8,16 +8,25 @@
     nvim_dir: "{{ home_dir }}/.config/nvim"
     fish_dir: "{{ home_dir }}/.config/fish"
     files_to_upload:
+
       - src: /files/40-libinput.conf
         dest: /etc/X11/xorg.conf.d/40-libinput.conf
         mode: 644
         owner: root
         group: root
+
       - src: /files/01-touchpad.conf
         dest: /etc/X11/xorg.conf.d/01-touchpad.conf
         mode: 644
         owner: root
         group: root
+
+      - src: /files/backlight.rules
+        dest: /etc/udev/rules.d/backlight.rules
+        mode: 644
+        owner: root
+        group: root
+
       - src: /files/dwmblocks.hook
         dest: /etc/pacman.d/hooks/dwmblocks.hook
         mode: 644
@@ -30,6 +39,8 @@
       user:
         name: "{{ user_name }}"
         createhome: yes
+        groups: video
+        shell: /usr/bin/fish
         home: "{{ home_dir }}"
 
     - name: Install common packages
@@ -37,7 +48,6 @@
         name: "{{ item }}"
         state: present
       with_items: "{{ (lookup('file', 'packages_common.yml') | from_yaml)['packages'] }}"
-
 
     - name: Clone neovim config
       git:
