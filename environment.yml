@@ -59,6 +59,9 @@
         depth: 1
       become_user: "{{ user_name }}"
 
+    - name: Use sed to replace URL in Git config for neovim
+      command: "sed -i 's|https://github.com/dme86/neovim|git@github.com:dme86/neovim.git|g' {{ nvim_dir }}/.git/config"
+
     - name: Clone fish config
       git:
         repo: https://github.com/dme86/fish
@@ -68,6 +71,10 @@
         force: yes
         depth: 1
       become_user: "{{ user_name }}"
+
+    - name: Use sed to replace URL in Git config for fish
+      command: "sed -i 's|https://github.com/dme86/fish|git@github.com:dme86/fish.git|g' {{ fish_dir }}/.git/config"
+
 
       ### only if --extra-vars "desktop=True"
 
@@ -88,6 +95,10 @@
         depth: 1
       become_user: "{{ user_name }}"
       when: desktop|default(False)|bool
+
+    - name: Use sed to replace URL in Git config for dwm
+      command: "sed -i 's|https://github.com/dme86/dwm|git@github.com:dme86/dwm.git|g' {{ home_dir }}/.config/dwm/.git/config"
+
 
     - name: Clone yay
       git:
@@ -110,6 +121,9 @@
         depth: 1
       become_user: "{{ user_name }}"
       when: desktop|default(False)|bool
+
+    - name: Use sed to replace URL in Git config for wallpapers
+      command: "sed -i 's|https://github.com/dme86/.wallpapers|git@github.com:dme86/.wallpapers.git|g' {{ home_dir }}/.wallpapers/.git/config"
 
     - name: Install dwm
       command: make install
