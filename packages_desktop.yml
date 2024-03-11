@@ -8,6 +8,8 @@ packages:
   - libpulse
   - playerctl # also supports https://github.com/ciderapp/Cider
   - dunst
+  - exa
+  - pass
   - scrot
   - feh
   - nemo
