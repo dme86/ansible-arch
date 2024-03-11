@@ -4,10 +4,14 @@ packages:
   - dmenu
   - arandr
   - acpilight
+  - bluez
+  - bluez-utils # https://wiki.archlinux.org/title/bluetooth
+  - ncdu
+  - neofetch
   - reflector
   - autorandr
   - libpulse
-  - playerctl # also supports https://github.com/ciderapp/Cider
+  - playerctl
   - dunst
   - exa
   - pass

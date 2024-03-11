@@ -4,6 +4,7 @@ packages:
   - fish
   - neovim
   - htop
+  - less
   - lazygit
   - fzf
   - jq
