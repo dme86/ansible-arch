@@ -168,4 +168,28 @@
       register: file_stat
       when: desktop|default(false)|bool
 
+    - name: Create '.ssh' directory
+      ansible.builtin.file:
+        path: "{{ home_dir }}/.ssh/"
+        state: directory
+        mode: '0700'
+
+    - name: Download public key from GitHub
+      get_url:
+        url: "https://github.com/dme86.keys"
+        dest: "{{ home_dir }}/.ssh/id_rsa.pub"
+        mode: '0600'
+
+    - name: Ensure .gnupg directory exists
+      file:
+        path: "{{ home_dir }}/.gnupg"
+        state: directory
+        mode: '0700'
+
+    - name: Download GPG public key from GitHub
+      get_url:
+        url: "https://github.com/dme86.gpg"
+        dest: "{{ home_dir }}/.gnupg/me.daniel.meier.gpg"
+        mode: '0600'
+
 # fix: warning: config file /etc/pacman.conf, line 17: directive '\1' in section 'options' not recognized.
