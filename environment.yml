@@ -206,10 +206,17 @@
         dest: "{{ home_dir }}/.gnupg/me.daniel.meier.gpg"
         mode: '0600'
 
+    - name: Enable service paccache.timer
+      systemd_service:
+        name: paccache.timer
+        state: started
+        enabled: true
+
     - name: Enable service reflector.timer
       systemd_service:
         name: reflector.timer
         state: started
         enabled: true
+
 
 # fix: warning: config file /etc/pacman.conf, line 17: directive '\1' in section 'options' not recognized.
