@@ -218,5 +218,10 @@
         state: started
         enabled: true
 
+    - name: Enable service bluetooth.service
+      systemd_service:
+        name: bluetooth.service
+        state: started
+        enabled: true
 
 # fix: warning: config file /etc/pacman.conf, line 17: directive '\1' in section 'options' not recognized.
