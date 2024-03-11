@@ -4,6 +4,7 @@ packages:
   - dmenu
   - arandr
   - acpilight
+  - reflector
   - autorandr
   - libpulse
   - playerctl # also supports https://github.com/ciderapp/Cider
